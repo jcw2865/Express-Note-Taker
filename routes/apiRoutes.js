@@ -1,19 +1,35 @@
-// Dependencies
-var express = require("express");
-var app = express();
-var PORT = process.env.PORT || 3000;
-
-// Sets up the Express app to handle data parsing
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(express.static("public"));
+// CREATE (get), READ (post), UPDATE (put), DELETE (delete) => CRUD
 
 
+// ==========
+// DEPENDENCIES
+// ==========
 
-app.get("*", function (req, res) {
-    res.sendFile(path.join(__dirname, "index.html"));
+const router = require("express").Router();
+const store = require("./../db/store");
+
+// ==========
+// ROUTES
+// ==========
+
+router.get("/notes", function (req, res) {
+    store
+        .getNotes()
+        .then(notes => res.json(notes))
+        .catch(err => res.status(500).json(err))
 });
 
-app.get("/notes", function (req, res) {
-    res.sendFile(path.join(__dirname, "notes.html"));
+router.post("/notes", function (req, res) {
+    store
+        .addNotes(req.body)
+        .then()
+        .catch(err => res.status(500).json(err))
 });
+
+router.delete("/notes", function (req, res) {
+    store
+        .deleteNotes()
+        .then()
+        .catch(err => res.status(500).json(err))
+});
+
