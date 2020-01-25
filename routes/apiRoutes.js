@@ -21,15 +21,17 @@ router.get("/notes", function (req, res) {
 
 router.post("/notes", function (req, res) {
     store
-        .addNotes(req.body)
-        .then()
+        .addNote(req.body)
+        .then((note) => res.json(note))
         .catch(err => res.status(500).json(err))
 });
 
-router.delete("/notes", function (req, res) {
+router.delete("/notes/:id", function (req, res) {
     store
-        .deleteNotes()
-        .then()
+        .deleteNote(req.params.id)
+        .then(() => res.json({ ok: true }))
         .catch(err => res.status(500).json(err))
 });
+
+module.exports = router;
 
