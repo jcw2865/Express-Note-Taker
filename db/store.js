@@ -3,6 +3,7 @@
 // ==========
 
 const fs = require("fs");
+const path = require("path");
 const util = require("util");
 
 // Creates a promise, which the program will complete before moving on. 
@@ -18,10 +19,10 @@ class Store {
         this.lastId = 0;
     };
     read() {
-        return readFileAsync("db/db.json", "utf8");
+        return readFileAsync(path.join(__dirname, "db.json"), "utf8");
     };
     write(note) {
-        return writeFileAsync("db/db.json", JSON.stringify(note));
+        return writeFileAsync(path.join(__dirname, "db.json"), JSON.stringify(note));
     };
     getNotes() {
         return this.read().then(notes => {
@@ -31,22 +32,24 @@ class Store {
             return parsedNotes;
         });
     };
-    addNotes(notes) {
+    addNote(newNote) {
         //create new obj with notes param using notes.title and notes.text
-        console.log(notes);
-        // note = [
-        //     {
-        //         title: "example",
-        //         text: "This is an example note."
-        //     }
-        // ]
+        console.log(newNote);
+        return this.getNotes().then(notes => {
+            console.log(newNote, notes);
+            const newNoteList = [...notes, newNote]; // Creates a new array with the memebers of the array notes and adds newNote to the end
+            console.log(newNoteList);
+            // Step 1: convert to a string
+            return this.write(newNoteList);
+        })
         //this.read().then(youll get info back)
         //this.write with old json info and new obj from frontend
     };
     deleteNotes(id) {
-
+        // use the filter function
     };
 };
 
-module.exports = new Store();
+const store = new Store();
 
+module.exports = store;
