@@ -52,7 +52,7 @@ class Store {
         return this.getNotes()
             .then(notes => {
                 console.log("This note says " + title);
-                for (var i = 1; i < notes.length; i++) {
+                for (var i = 0; i < notes.length; i++) {
                     if (notes[i].title === title) {
                         // Splice takes i position, and then deletes the 1 note.
                         notes.splice(i, 1);
