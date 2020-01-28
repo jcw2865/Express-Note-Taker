@@ -47,66 +47,31 @@ class Store {
         //this.read().then(youll get info back)
         //this.write with old json info and new obj from frontend
     };
-    deleteNotes(database) {
+    deleteNotes(title) {
         // use the filter function
-        return this.getNotes().then(database => {
-            for (let i = 0; i < database.length; i++) {
-                if (database[i].title == req.params.title) {
-                    // Splice takes i position, and then deletes the 1 note.
-                    database.splice(i, 1);
-                    break;
-                } else {
-                    console.log("There is an error if the for-loop if/else statement.")
+        return this.getNotes()
+            .then(notes => {
+                console.log("This note says " + title);
+                for (var i = 1; i < notes.length; i++) {
+                    if (notes[i].title === title) {
+                        // Splice takes i position, and then deletes the 1 note.
+                        notes.splice(i, 1);
+                        console.log(notes);
+                        break;
+                    }
                 }
-            }
-            fs.writeFileSync(jsonFilePath, JSON.stringify(database), function (err) {
-                if (err) {
-                    console.log("There is an error in the writeFile if/else statement.")
-                    return console.log(err);
-                } else {
-                    console.log("Your note was deleted!");
-                }
-            });
-            res.json(database);
-        })
-        note = newNoteList[i].title;
-        for (let i = 0; i < newNoteList.length; i++) {
-            if (newNoteList[i].title == req.params.title) {
-                // Splice takes i position, and then deletes the 1 note.
-                database.splice(i, 1);
-                break;
-            }
-        }
-        fs.writeFileSync(jsonFilePath, JSON.stringify(database), function (err) {
-            if (err) {
-                return console.log(err);
-            } else {
-                console.log("Your note was deleted!");
-            }
-        });
-        return res.json(database);
-
-        // return app.delete("/api/notes/:title", function (req, res) {
-        //     let jsonFilePath = path.join(__dirname, "/db/db.json");
-        //     // request to delete note by id.
-        //     for (let i = 0; i < database.length; i++) {
-        //         if (database[i].title == req.params.title) {
-        //             // Splice takes i position, and then deletes the 1 note.
-        //             database.splice(i, 1);
-        //             break;
-        //         }
-        //     }
-        //     // Write the db.json file again.
-        // fs.writeFileSync(jsonFilePath, JSON.stringify(database), function (err) {
-        //     if (err) {
-        //         return console.log(err);
-        //     } else {
-        //         console.log("Your note was deleted!");
-        //     }
-        // });
-        // res.json(database);
-        // });
-    };
+                this.write(notes);
+                //     fs.writeFileSync(jsonFilePath, JSON.stringify(database), function (err) {
+                //         if (err) {
+                //             console.log("There is an error in the writeFile if/else statement.")
+                //             return console.log(err);
+                //         } else {
+                //             console.log("Your note was deleted!");
+                //         }
+                //     });
+                //     res.json(database);
+            })
+    }
 };
 
 const store = new Store();
